@@ -40,6 +40,7 @@ rm .my.cnf
 
 ##4. Configure and Start Zoneminder
 #Set permissions of /etc/zm/zm.conf to root:www-data 740
+echo -e "\e[33m Configuring and Starting Apache + Zoneminder \e[0m"
 chmod 740 /etc/zm/zm.conf
 chown root:www-data /etc/zm/zm.conf
 # Enable Zoneminder service to start at boot
@@ -50,6 +51,11 @@ service zoneminder start
 # Enable CGI and Zoneminder configuration in Apache.
 a2enmod cgi
 a2enconf zoneminder
+# Disable Apache Web Server Signature
+cat << END >> /etc/apache2/apache2.conf 
+ServerSignature Off 
+ServerTokens Prod 
+END
 service apache2 restart
 # Optional: Install Cambozola (needed if you use Internet Explorer)
 cd /usr/src && wget http://www.andywilcock.com/code/cambozola/cambozola-latest.tar.gz
