@@ -17,6 +17,7 @@ echo -e "\e[32m Config file good.\e[0m"
 ##2. Install Zoneminder for Debian Jesse
 echo -e "\e[33m Getting Jessie backports, install Zoneminder and dependencies \e[0m"
 echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
+
 apt-get update
 apt-get install -y php5 mysql-server php-pear php5-mysql
 apt-get upgrade
