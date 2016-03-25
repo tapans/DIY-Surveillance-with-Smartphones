@@ -1,2 +1,5 @@
-password=changeme
-dbrootpass=toor
+DBROOTPASS=toor
+DBUSER=zm
+DBPASS=zoneminder
+GMAIL_USERNAME=myemail@gmail.com
+GMAIL_PASSWORD=mypassword
