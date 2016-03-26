@@ -29,7 +29,7 @@
 
 3. Assign a static IP on each smartphone. enable ssh login without password (scp ~/.ssh/id_rsa.pub android@ip:~/.ssh/authorized_keys)
 
-4. Start the Debian container on the server phone, SSH into it (ssh android@ip_address), sudo su, git clone this repo, chmod +x run.sh, edit conf/config file with your custom settings, and execute run.sh script to install zoneminder, dependencies and common configurations.
+4. Start the Debian container on the server phone, SSH into it (ssh android@ip_address), sudo su, git clone this repo, chmod +x start.bash, edit config files in conf directory with your custom settings, and execute start.bash script to install zoneminder, dependencies, jobs, and common configurations.
 
 5. Open Zoneminder in web browser at http://serverip/zm
 Click Options, 
@@ -55,4 +55,4 @@ Optional: Setup port forwarding to access web console remotely
 
 ## changelog
 * 15-Feb-2015 initial commit
-* 25-Mar-2015 scripted email configurations
+* 25-Mar-2015 scripted email configurations, and added daily job to toggle night vision settings for all configured ip cameras

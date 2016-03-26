@@ -4,15 +4,16 @@ PATH=/bin:/usr/bin:/usr/local/bin
 
 ##1. Read & source config file after sanitizing, and do an update
 echo -e "\e[33m Checking config file...\e[0m" >&2
-configfile='./conf/config'
+mainConfigs='./conf/main'
+cameraConfigs="./conf/ipcameras'"
 
 # check if config file contains bad input
-if egrep -q	 -v '^#|^[^ ]*=[^;]*' $configfile; then
-	echo -e "\e[31m Bad configurations. Only name=value pairs allowed in config file! \e[0m";
+if egrep -q -v '^#|^[^ ]*=[^;]*' $mainConfigs && egrep -v '^#|^[^ ]*=[^;]*' $cameraConfigs ; then
+	echo -e "\e[31m Bad configurations. Only name=value pairs allowed in config files! \e[0m";
 	exit 1;
 fi
-echo -e "\e[32m Config file good.\e[0m"
-. $configfile
+echo -e "\e[32m Config files good.\e[0m"
+. $mainConfigs
 
 ##2. Install Zoneminder for Debian Jesse
 echo -e "\e[33m Getting Jessie backports, install Zoneminder and dependencies \e[0m"
@@ -87,7 +88,17 @@ END
 sed -i 's/MIME::Lite->send/#MIME::Lite->send/g' /usr/bin/zmfilter.pl
 sed -i 's/$mail->send()/$mail->send(\x27sendmail\x27,\x27\/usr\/sbin\/ssmtp\x27,$Config{ZM_EMAIL_ADDRESS});/g' /usr/bin/zmfilter.pl
 
-##6. start relevant services, if not started already
+##6. setup cron jobs
+echo -e "\e[33m Configuring cron jobs \e[0m"
+apt-get install -y curl
+mkdir -p /opt/ipcameras/jobs
+cp conf/ipcameras /opt/ipcameras/ipcameras.conf
+cp jobs/camera/* /opt/ipcameras/jobs/
+#Daily camera job to toggle night vision and relevant settings based on sunset & sunrise times
+#cp jobs/camera/toggleNightSettings.bash /etc/jobs/cron/daily/toggleNightSettings.bash
+
+
+##7. start relevant services, if not started already
 service apache2 start
 service mysql start
 service zoneminder start
