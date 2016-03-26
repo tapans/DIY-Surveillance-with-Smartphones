@@ -49,9 +49,7 @@ Click Options,
 		FROM_EMAIL: your email
 Restart Zoneminder
 
-6. Setup all smartphones running Ip Webcam as monitors. See setup guide here: https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/
-
-General guide on zoneminder monitors: http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html
+6. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
 
 Optional: Setup port forwarding to access web console remotely
 
