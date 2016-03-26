@@ -32,6 +32,7 @@
 4. Start the Debian container on the server phone, SSH into it (ssh android@ip_address), sudo su, git clone this repo, chmod +x start.bash, edit config files in conf directory with your custom settings, and execute start.bash script to install zoneminder, dependencies, jobs, and common configurations.
 
 5. Open Zoneminder in web browser at http://serverip/zm
+<pre>
 Click Options, 
 	Click Images tab
 		Check Is the (optional) cambozola java streaming client installed (?) 
@@ -49,6 +50,7 @@ Click Options,
 Restart Zoneminder
 
 6. Setup all smartphones running Ip Webcam as monitors. See setup guide here: https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/
+
 General guide on zoneminder monitors: http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html
 
 Optional: Setup port forwarding to access web console remotely
