@@ -10,9 +10,16 @@
 (https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en): Turn your smartphone into a proper IP Camera
 
 ## Requirements:
-- Couple of smartphones, 1 of which should be android so you can root it and use it as the zoneminder server (mileage will vary depending on the smartphone - I Used Samsung Galaxy S4, Galaxy S2, Blackberry Z30 and HTC Panache, out of which S2 and S4 were the zoneminder servers)
-- Mounts for the IP Camera Smartphones (I just bought the cheap commercially ones for car dashboard)
-- tech and linux saviness: you'll need to root your phone, possibly troubleshoot linux issues when installing Linux Deploy, open up ports on your router if you want to access the web interface remotely, etc
+- Couple of smartphones, 1 of which should be rootable so you can use it as the zoneminder server (mileage will vary depending on the smartphone - I Used Samsung Galaxy S4, Galaxy S2, Blackberry Z30 and HTC Panache, out of which S2 and S4 were the zoneminder servers)
+- Mounts for the IP Camera Smartphones (I just used the cheap commercial ones for car dashboard)
+- tech and linux saviness: you'll need to root your phone, possibly troubleshoot linux issues when installing Linux Deploy as well as the setup script, open up ports on your router if you want to access the web interface remotely, etc
+
+## Why run the surveillance server on a smartphone?
+- To avoid trusting 3rd party hosting services & having full control and flexibility
+- Practically no cost and minimal energy consumption - just have usb cables charging the phones at all times!
+- Because you can!
+
+Disclaimer: Note that a smartphone is not meant to be run as a dedicated server and the CPU will likely be heating up with usage like this, monitoring is strongly advised! Use at your own risk!
 
 ## Steps:
 1. Choose 1 of the android smartphones as the server: root it (I used Cyanogenmod), install Busy Boy app by meefik and Linux Deploy app.
@@ -53,7 +60,7 @@ Restart Zoneminder
 
 Optional: Setup port forwarding to access web console remotely
 
-## changelog
+## Changelog:
 * 15-Feb-2016 initial commit
 * 25-Mar-2016 scripted email configurations
 * 02-Apr-2016 added daily job to toggle night vision settings for all configured ip cameras
