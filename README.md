@@ -54,5 +54,6 @@ Restart Zoneminder
 Optional: Setup port forwarding to access web console remotely
 
 ## changelog
-* 15-Feb-2015 initial commit
-* 25-Mar-2015 scripted email configurations, and added daily job to toggle night vision settings for all configured ip cameras
+* 15-Feb-2016 initial commit
+* 25-Mar-2016 scripted email configurations
+* 02-Apr-2016 added daily job to toggle night vision settings for all configured ip cameras
