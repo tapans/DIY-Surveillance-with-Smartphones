@@ -1,4 +1,5 @@
 #!/bin/bash
+
 PATH=/bin:/usr/bin:/usr/local/bin
 
 toggle_night_vision () {

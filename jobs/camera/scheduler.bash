@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PATH=/bin:/usr/bin:/usr/local/bin
+
 if [ -e /opt/surveillanceserver/ipcameras/ipcameras.conf ]; then
 	. /opt/surveillanceserver/ipcameras/ipcameras.conf	
 	

@@ -1,5 +1,5 @@
-# DIY-Surveillance-with-old-smart-phones
-> DIY hack for a complete CCTV solution using open source software and old smartphones.
+# DIY-Surveillance-with-smart-phones
+> DIY hack for a complete CCTV solution using open source software and smartphones.
 ----
 
 ## Open Source & Commercial Software Used:
@@ -58,7 +58,7 @@ Restart Zoneminder
 
 6. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
 
-Optional: Setup port forwarding to access web console remotely
+Optional: Setup port forwarding to access web console remotely, Install client [Android app](https://play.google.com/store/apps/details?id=com.html5clouds.zmview&hl=en) to view the feeds: 
 
 ## Changelog:
 * 15-Feb-2016 initial commit
