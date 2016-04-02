@@ -1,0 +1,8 @@
+DBROOTPASS=somepass
+DBUSER=zm
+DBPASS=zmpass
+GMAIL_USERNAME=myemail@gmail.com
+GMAIL_PASSWORD=mypassword
+TIMEZONE=Canada/Eastern
+LATITUDE=43.6532
+LONGITUDE-79.3832
