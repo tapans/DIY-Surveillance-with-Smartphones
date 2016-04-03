@@ -1,4 +1,4 @@
-# DIY-Surveillance-with-smart-phones
+# DIY-Surveillance-with-Smartphones
 > DIY hack for a complete CCTV solution using open source software and smartphones.
 ----
 
