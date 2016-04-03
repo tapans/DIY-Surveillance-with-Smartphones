@@ -1,9 +1,7 @@
 #!/bin/bash
 
-PATH=/bin:/usr/bin:/usr/local/bin
-
 toggle_night_vision () {
-	if [ $1 -eq "on" ]; then
+	if [ $1 = "on" ]; then
 		curl -u $4:$5 http://$2:$3/settings/night_vision_gain?set=60.00
 	fi
 	curl -u $4:$5 http://$2:$3/settings/night_vision?set=$1
@@ -23,10 +21,9 @@ if [ $# -eq 3 ] || [ $# -eq 5 ]; then
 		toggle_night_vision $1 ${hosts[$i]} ${ports[$i]} ${usernames[$i]} ${passwords[$i]}
 	done
 else
-	echo Usage: on|off ip_camera_host ip_camera_port
-	echo Usage: on|off ip_camera_host ip_camera_port username password
-	echo Usage: on|off ip1:ip2:ipn port1:port2:portn 
-	echo Usage: on|off ip1:ip2:ipn port1:port2:portn user1:user2:usern pass1:pass2:passn
+	echo "Usage: on|off ip_camera_host ip_camera_port"
+	echo "Usage: on|off ip_camera_host ip_camera_port username password"
+	echo "Usage: on|off ip1:ip2:ipn port1:port2:portn"
+	echo "Usage: on|off ip1:ip2:ipn port1:port2:portn user1:user2:usern pass1:pass2:passn"
 	exit 1
 fi
-

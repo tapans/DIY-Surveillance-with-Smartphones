@@ -2,29 +2,31 @@
 > DIY hack for a complete CCTV solution using open source software and smartphones.
 ----
 
+![alt tag](https://github.com/tapans/DIY-Surveillance-with-old-smart-phones/blob/master/Smartphone-Surveillance.jpg)
+
 ## Open Source & Commercial Software Used:
-- [Linux Deploy](https://github.com/meefik/linuxdeploy): Install complete linux distribution on Android Device
+- [Linux Deploy](https://github.com/meefik/linuxdeploy): Install a complete linux distribution on an Android Device
 - [Zoneminder]
-(https://zoneminder.com/): Suite of CCTV applications
+(https://zoneminder.com/): Suite of CCTV applications, the core surveillance server software
 - [IP Web Camera]
 (https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en): Turn your smartphone into a proper IP Camera
 
 ## Requirements:
 - Couple of smartphones, 1 of which should be rootable so you can use it as the zoneminder server (mileage will vary depending on the smartphone - I Used Samsung Galaxy S4, Galaxy S2, Blackberry Z30 and HTC Panache, out of which S2 and S4 were the zoneminder servers)
 - Mounts for the IP Camera Smartphones (I just used the cheap commercial ones for car dashboard)
-- tech and linux saviness: you'll need to root your phone, possibly troubleshoot linux issues when installing Linux Deploy as well as the setup script, open up ports on your router if you want to access the web interface remotely, etc
+- tech and linux saviness: you'll need to root your phone, possibly troubleshoot linux issues when installing Linux Deploy as well as the start script, open up ports on your router if you want to access the web interface remotely, etc
 
 ## Why run the surveillance server on a smartphone?
 - To avoid trusting 3rd party hosting services & having full control and flexibility
 - Practically no cost and minimal energy consumption - just have usb cables charging the phones at all times!
 - Because you can!
 
-Disclaimer: Note that a smartphone is not meant to be run as a dedicated server and the CPU will likely be heating up with usage like this, monitoring is strongly advised! Use at your own risk!
+Disclaimer: Note that a smartphone is not meant to be run as a dedicated server and the CPU will likely be heating up with usage like this! Use at your own risk!
 
 ## Steps:
 0. Assign a static IP on each smartphone.
 
-1. Choose 1 of the android smartphones as the server: root it (I used Cyanogenmod), install Busy Boy app by meefik and Linux Deploy app. 
+1. Choose 1 of the android smartphones as the server: root it (I used Cyanogenmod), install Busy Boy app by meefik and then install Linux Deploy app. 
 
 2. Open Linux Deploy, install Debian container: https://github.com/meefik/linuxdeploy/wiki/Installing-Debian
   
@@ -36,14 +38,14 @@ Disclaimer: Note that a smartphone is not meant to be run as a dedicated server 
 	- Set Custom Mounts to on
 	- Add mount points (use status option on main screen to view available mount paths)
 
-Start the Debian container
+  Start the Debian container
 
 3. On your computer, clone this repo and edit config files in the conf directory with your custom settings.
-Enable passwordless ssh login into the phone with:
+Enable passwordless ssh login into the server phone with:
 <pre><code>ssh android@IP "mkdir -p ~/.ssh" && scp ~/.ssh/id_rsa.pub android@IP:~/.ssh/authorized_keys</code></pre>
 And then copy over this repo into the phone using scp
 
-4. SSH into the phone (ssh android@ip_address), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
+4. SSH into the phone (ssh android@IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
 
 5. From a web browser on your computer, open zoneminder web interface at http://serverip/zm
 <pre>

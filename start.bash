@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PATH=/bin:/usr/bin:/usr/local/bin
-
 ##1. Read & source config file after sanitizing, update, and setup global configs
 echo -e "\e[33m Checking config file...\e[0m" >&2
 mainConfigs='./conf/main'
@@ -30,13 +28,13 @@ export TZ=$TIMEZONE
 
 
 ##2. Install Zoneminder for Debian Jesse
-apt-get update
 echo -e "\e[33m Getting Jessie backports, install Zoneminder and dependencies \e[0m"
 echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
+apt-get update
 DEBIAN_FRONTEND="noninteractive"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $DBROOTPASS"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $DBROOTPASS"
-apt-get install -y php5 mysql-server php-pear php5-mysql
+apt-get install -y php5 mysql-server php-pear php5-mysql php5-gd
 apt-get upgrade
 apt-get dist-upgrade
 apt-get install -y zoneminder
@@ -44,14 +42,14 @@ apt-get install -y libvlc-dev libvlccore-dev vlc
 
 
 ###Steps 3 and 4 adopted from Zoneminder Wiki page:
-###https://wiki.zoneminder.com/Debian_8.1_64-bit_with_Zoneminder_1.28.1_the_Easy_Way
+###https://wiki.zoneminder.com/Debian_8_64-bit_with_Zoneminder_1.29.0_the_Easy_Way
 ##3. Create and configure Zoneminder database in MySQL
 echo -e "\e[33m Creating Zoneminder database in mysql \e[0m"
 cd ~
 cat << EOMYSQLCONF > .my.cnf 
 [client]
-user=$DBUSER
-password=$DBPASS
+user=root
+password=$DBROOTPASS
 EOMYSQLCONF
 mysql < /usr/share/zoneminder/db/zm_create.sql 
 mysql -e "grant select,insert,update,delete,create on zm.* to 'zmuser'@localhost identified by 'zmpass';"
@@ -68,8 +66,7 @@ chown root:www-data /etc/zm/zm.conf
 systemctl enable zoneminder.service
 
 # Add www-data to the sudo group (to enable use of local video devices)
-adduser www-data video
-service zoneminder start
+adduser www-data sudo
 
 # Enable CGI and Zoneminder configuration in Apache.
 a2enmod cgi
@@ -79,6 +76,18 @@ a2enconf zoneminder
 cat << END >> /etc/apache2/apache2.conf 
 ServerSignature Off 
 ServerTokens Prod 
+END
+
+#add php to timezone
+TIMEZONE_ESC=$(sed 's/[/]/\\&/g' <<< $TIMEZONE)
+sed -i 's/.*date.timezone.*/date.timezone = '$TIMEZONE_ESC'/g' /etc/php5/apache2/php.ini
+
+#allow api to work
+chown -R www-data:www-data /usr/share/zoneminder
+cat << END >> /etc/apache2/conf-enabled/zoneminder.conf
+<Directory /usr/share/zoneminder/www/api>
+    AllowOverride All
+</Directory>
 END
 
 # Install Cambozola
