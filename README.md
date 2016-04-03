@@ -23,6 +23,11 @@
 
 Disclaimer: Note that a smartphone is not meant to be run as a dedicated server and the CPU will likely be heating up with usage like this! Use at your own risk!
 
+## What the start.bash script does:
+- Automatically installs and configures zoneminder on the server phone
+- Sets up mail on the server using your gmail account
+- Sets up cron and at jobs to toggle night vision on every configured ip camera based on the daily sunrise and sunset times
+
 ## Steps:
 0. Assign a static IP on each smartphone.
 
