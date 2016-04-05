@@ -102,7 +102,7 @@ apt-get install -y ssmtp mailutils
 
 #ssmtp configurations for using GMAIL for email
 cat << END >> /etc/ssmtp/ssmtp.conf
-root=$GMAIL_EMAIIL
+root=$GMAIL_EMAIL
 mailhub=smtp.gmail.com:587
 rewriteDomain=
 hostname=gmail.com
