@@ -62,6 +62,9 @@ echo -e "\e[33m Configuring and Starting Apache + Zoneminder \e[0m"
 chmod 740 /etc/zm/zm.conf
 chown root:www-data /etc/zm/zm.conf
 
+#Soft link to zoneminder web interface
+ln -s /usr/share/zoneminder/www/ /var/www/html/zm
+
 # Enable Zoneminder service to start at boot
 systemctl enable zoneminder.service
 
