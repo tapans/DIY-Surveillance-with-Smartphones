@@ -28,9 +28,9 @@ export TZ=$TIMEZONE
 
 
 ##2. Install Zoneminder for Debian Jesse
+apt-get update
 echo -e "\e[33m Getting Jessie backports, install Zoneminder and dependencies \e[0m"
 echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
-apt-get update
 DEBIAN_FRONTEND="noninteractive"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $DBROOTPASS"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $DBROOTPASS"
