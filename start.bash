@@ -11,35 +11,32 @@ if egrep -q -v '^#|^[^ ]*=[^;]*' $mainConfigs && egrep -v '^#|^[^ ]*=[^;]*' $cam
 	exit 1;
 fi
 
-#copy configs and job scripts to /opt/surveillanceserver location
-mkdir -p /opt/surveillanceserver/ipcameras/jobs
-cp conf/main /opt/surveillanceserver/main.conf
-cp conf/ipcameras /opt/surveillanceserver/ipcameras/ipcameras.conf
-cp jobs/camera/* /opt/surveillanceserver/ipcameras/jobs/
+echo -e "\e[33m Copying configs and job scripts to /opt/surveillance...\e[0m" >&2
+mkdir -p /opt/surveillanceserver/jobs && mkdir -p /opt/surveillanceserver/conf
+cp conf/* /opt/surveillanceserver/conf
+cp -R jobs/* /opt/surveillanceserver/jobs/
 
 #make variables from main.conf available in current environment
 . $mainConfigs
 
-echo -e "\e[32m Config files good. \e[0m"
-
-#setup timezone
+echo -e "\e[33m Setting Timezone...\e[0m" >&2
 echo $TIMEZONE > /etc/timezone
 export TZ=$TIMEZONE
+rm /etc/localtime && ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 
 ##2. Install Zoneminder for Debian Jesse
-apt-get update
 echo -e "\e[33m Getting Jessie backports, install Zoneminder and dependencies \e[0m"
-echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
 DEBIAN_FRONTEND="noninteractive"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $DBROOTPASS"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $DBROOTPASS"
-apt-get install -y php5 mysql-server php-pear php5-mysql php5-gd
+apt-get install -y php5 mysql-server php-pear php5-mysql
+echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
+apt-get update
 apt-get upgrade
 apt-get dist-upgrade
 apt-get install -y zoneminder
 apt-get install -y libvlc-dev libvlccore-dev vlc
-
 
 ###Steps 3 and 4 adopted from Zoneminder Wiki page:
 ###https://wiki.zoneminder.com/Debian_8_64-bit_with_Zoneminder_1.29.0_the_Easy_Way
@@ -68,29 +65,30 @@ systemctl enable zoneminder.service
 # Add www-data to the sudo group (to enable use of local video devices)
 adduser www-data sudo
 
-# Enable CGI and Zoneminder configuration in Apache.
+#allow api to work
+chown -R www-data:www-data /usr/share/zoneminder
+cat << END >> /etc/apache2/conf-available/zoneminder.conf
+<Directory /usr/share/zoneminder/www/api>
+    AllowOverride All
+</Directory>
+END
+
+echo -e "\e[33m Enabling CGI mod & Zoneminder configurations in Apache \e[0m"
 a2enmod cgi
 a2enconf zoneminder
+
+#add php to timezone
+TIMEZONE_ESC=$(sed 's/[/]/\\&/g' <<< $TIMEZONE)
+sed -i 's/.*date.timezone.*/date.timezone = '$TIMEZONE_ESC'/g' /etc/php5/apache2/php.ini
 
 # Disable Apache Web Server Signature
 cat << END >> /etc/apache2/apache2.conf 
 ServerSignature Off 
 ServerTokens Prod 
 END
+service apache2 reload
 
-#add php to timezone
-TIMEZONE_ESC=$(sed 's/[/]/\\&/g' <<< $TIMEZONE)
-sed -i 's/.*date.timezone.*/date.timezone = '$TIMEZONE_ESC'/g' /etc/php5/apache2/php.ini
-
-#allow api to work
-chown -R www-data:www-data /usr/share/zoneminder
-cat << END >> /etc/apache2/conf-enabled/zoneminder.conf
-<Directory /usr/share/zoneminder/www/api>
-    AllowOverride All
-</Directory>
-END
-
-# Install Cambozola
+echo -e "\e[33m Installing Cambozola plugin \e[0m"
 cd /usr/src && wget http://www.andywilcock.com/code/cambozola/cambozola-latest.tar.gz
 tar -xzvf cambozola-latest.tar.gz
 cp cambozola*/dist/cambozola.jar /usr/share/zoneminder /usr/share/zoneminder/www
@@ -102,7 +100,7 @@ apt-get install -y ssmtp mailutils
 
 #ssmtp configurations for using GMAIL for email
 cat << END >> /etc/ssmtp/ssmtp.conf
-root=$GMAIL_EMAIIL
+root=$GMAIL_EMAIL
 mailhub=smtp.gmail.com:587
 rewriteDomain=
 hostname=gmail.com
@@ -112,6 +110,7 @@ AuthPass=$GMAIL_PASSWORD
 FromLineOverride=YES
 END
 
+echo -e "\e[33m Configuring perl modules for sending email via zoneminder \e[0m"
 #install perl modules for email sending script of zoneminder
 perl -MCPAN -e shell << END
 install MIME::Lite
@@ -123,17 +122,24 @@ sed -i 's/MIME::Lite->send/#MIME::Lite->send/g' /usr/bin/zmfilter.pl
 sed -i 's/$mail->send()/$mail->send(\x27sendmail\x27,\x27\/usr\/sbin\/ssmtp\x27,$Config{ZM_EMAIL_ADDRESS});/g' /usr/bin/zmfilter.pl
 
 ##6. setup cron jobs
-echo -e "\e[33m Configuring cron jobs \e[0m"
+echo -e "\e[33m Configuring and kicking off cron jobs \e[0m"
 apt-get install -y curl at
 
+bash /opt/surveillanceserver/jobs/camera/scheduler.bash
+crontab << EOJOBS
+SHELL=/bin/bash
 #run camera scheduler job daily at midnight 
 #which will schedule jobs to toggle camera settings like nightvision 
 #at an offset time based on the sunset and sunrise time for the day
-echo "00 00 * * * /opt/surveillanceserver/ipcameras/jobs/scheduler.bash" | crontab -
+00 00 * * * /opt/surveillanceserver/jobs/camera/scheduler.bash
 
-##7. start relevant services, if not started already
-service apache2 start
-service mysql start
-service zoneminder start
-service cron start
-service atd start
+#run monitoring job every minute
+*/1 * * * * /opt/surveillanceserver/jobs/monitoring.bash
+EOJOBS
+
+##7. restart relevant services
+service apache2 restart
+service mysql restart
+service zoneminder restart
+service cron restart
+service atd restart

@@ -74,7 +74,10 @@ Restart Zoneminder
 
 Optional: Setup port forwarding to access web console remotely, Install client [Android app](https://play.google.com/store/apps/details?id=com.html5clouds.zmview&hl=en) to view the feeds: 
 
+To resize /dev/loop0 and increase space: Use losetup /dev/loop0 to see what file the loopback device is attached to, then you can increase its size with, for example, dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx where xxx is the number of MiB you want to add. After that, losetup -c /dev/loop0 and sudo resize2fs /dev/loop0 should make the new space available for use.
+
 ## Changelog:
 * 15-Feb-2016 initial commit
 * 25-Mar-2016 scripted email configurations
 * 02-Apr-2016 added daily job to toggle night vision settings for all configured ip cameras
+* 09-Apr-2016 added minutely run monitoring job: currently emails when cpu temperature is above set threshold
