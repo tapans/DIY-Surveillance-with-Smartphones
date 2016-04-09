@@ -1,5 +1,5 @@
 DBROOTPASS=somepass
-GMAIL_USERNAME=myemail@gmail.com
+GMAIL_EMAIL=myemail@gmail.com
 GMAIL_PASSWORD=mypassword
 TIMEZONE=Canada/Eastern
 LATITUDE=43.6532
