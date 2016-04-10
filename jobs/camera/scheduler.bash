@@ -15,9 +15,8 @@ if [ -e /opt/surveillanceserver/conf/ipcameras ]; then
     toggle_on_time=`date -d "$sunset + 1 hour" +'%H:%M'`
 
     #at those time, schedule toggleNightSettings job
-    echo "bash /opt/surveillanceserver/jobs/camera/toggleNightSettings.bash on $IP_CAMERA_HOSTS IP_CAMERA_PORTS IP_CAMERA_USERNAMES IP_CAMERA_PASSWORDS" | at -m $toggle_on_time
-    echo "bash /opt/surveillanceserver/jobs/camera/toggleNightSettings.bash off $IP_CAMERA_HOSTS IP_CAMERA_PORTS IP_CAMERA_USERNAMES IP_CAMERA_PASSWORDS" | at -m $toggle_off_time
-
+    echo "bash /opt/surveillanceserver/jobs/camera/toggleNightSettings.bash on $IP_CAMERA_HOSTS $IP_CAMERA_PORTS $IP_CAMERA_USERNAMES $IP_CAMERA_PASSWORDS" | at -m $toggle_on_time
+    echo "bash /opt/surveillanceserver/jobs/camera/toggleNightSettings.bash off $IP_CAMERA_HOSTS $IP_CAMERA_PORTS $IP_CAMERA_USERNAMES $IP_CAMERA_PASSWORDS" | at -m $toggle_off_time
 else
     echo "Missing ip cameras configuration file!"
     exit 1

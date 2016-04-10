@@ -72,12 +72,13 @@ Restart Zoneminder
 
 6. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
 
-Optional: Setup port forwarding to access web console remotely, Install client [Android app](https://play.google.com/store/apps/details?id=com.html5clouds.zmview&hl=en) to view the feeds: 
-
-To resize /dev/loop0 and increase space: Use losetup /dev/loop0 to see what file the loopback device is attached to, then you can increase its size with, for example, dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx where xxx is the number of MiB you want to add. After that, losetup -c /dev/loop0 and sudo resize2fs /dev/loop0 should make the new space available for use.
+## Other Notes
+- Setup port forwarding to access web console remotely, Install client [Android app](https://play.google.com/store/apps/details?id=com.html5clouds.zmview&hl=en) to view the feeds
+- To resize */dev/loop0* and increase space for the server container on the phone: Use *losetup /dev/loop0* to see what file the loopback device is attached to, then you can increase its size with, for example, *dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx* where xxx is the number of MiB you want to add. After that, *losetup -c /dev/loop0* and *resize2fs /dev/loop0* should make the new space available for use.
+- Security: Change default "changeme" password of the server! Create a password for the Zoneminder admin user on the web interface. Possible create other users on the system as well as for the zoneminder web interface with lower privileges, Configure [apache to use https](https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-14-04) to encrypt all communication
 
 ## Changelog:
 * 15-Feb-2016 initial commit
 * 25-Mar-2016 scripted email configurations
 * 02-Apr-2016 added daily job to toggle night vision settings for all configured ip cameras
-* 09-Apr-2016 added minutely run monitoring job: currently emails when cpu temperature is above set threshold
+* 09-Apr-2016 added minutely run monitoring job: currently emails when cpu temperature, disk usage etc is above set threshold
