@@ -11,8 +11,8 @@ if [ -e /opt/surveillanceserver/conf/ipcameras ]; then
     read sunrise sunset \
     <<< `curl -s "http://api.sunrise-sunset.org/json?lat=$lat_param&lng=$lng_param&data=today&formatted=0" \
     | python -c "import json, sys; r=json.load(sys.stdin); print r['results']['sunrise']; print r['results']['sunset']"`
-    toggle_off_time=`date -d "$sunrise - 1 hour" +'%H:%M'`
-    toggle_on_time=`date -d "$sunset + 1 hour" +'%H:%M'`
+    toggle_off_time=`date -d "$sunrise - 30 mins" +'%H:%M'`
+    toggle_on_time=`date -d "$sunset + 30 mins" +'%H:%M'`
 
     #at those time, schedule toggleNightSettings job
     echo "bash /opt/surveillanceserver/jobs/camera/toggleNightSettings.bash on $IP_CAMERA_HOSTS $IP_CAMERA_PORTS $IP_CAMERA_USERNAMES $IP_CAMERA_PASSWORDS" | at -m $toggle_on_time

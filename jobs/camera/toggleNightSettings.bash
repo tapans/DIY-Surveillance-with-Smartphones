@@ -1,10 +1,14 @@
 #!/bin/bash
 
-toggle_night_vision () {
-	if [ $1 = "on" ]; then
-		curl -u $4:$5 http://$2:$3/settings/night_vision_gain?set=60.00
-	fi
+toggle_night_settings () {
 	curl -u $4:$5 http://$2:$3/settings/night_vision?set=$1
+	if [ $1 = "on" ]; then
+		curl -u $4:$5 http://$2:$3/settings/night_vision_gain?set=10.00
+		curl -u $4:$5 http://$2:$3/settings/night_vision_average?set=20
+		curl -u $4:$5 http://$2:$3/settings/scenemode?set=night
+	else
+		curl -u $4:$5 http://$2:$3/settings/scenemode?set=auto
+	fi
 }
 
 if [ $# -eq 3 ] || [ $# -eq 5 ]; then
@@ -18,7 +22,7 @@ if [ $# -eq 3 ] || [ $# -eq 5 ]; then
 	
 	for (( i=0; i<${num_hosts}; i++ ));
 	do
-		toggle_night_vision $1 ${hosts[$i]} ${ports[$i]} ${usernames[$i]} ${passwords[$i]}
+		toggle_night_settings $1 ${hosts[$i]} ${ports[$i]} ${usernames[$i]} ${passwords[$i]}
 	done
 else
 	echo "Usage: on|off ip_camera_host ip_camera_port"

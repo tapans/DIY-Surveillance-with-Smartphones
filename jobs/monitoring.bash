@@ -24,6 +24,13 @@ if [ -e /opt/surveillanceserver/conf/monitoring ]; then
 		subject="DISK USAGE HIGH: $curr_disk_usage %"
 		send_email "$body" "$subject" "$to"
     fi
+
+    if [ $curr_batt_level -lt $BATTERY_LEVEL_THRESHOLD ]
+    then
+        body="Current batter level: $curr_batt_level % \nMinimum Threshold: $BATTERY_LEVEL_THRESHOLD %"
+        subject="BATTERY LEVEL LOW: $curr_batt_level %"
+        send_email "$body" "$subject" "$to"
+    fi
 else
     echo "missing monitoring configuration file!"
     exit 1
