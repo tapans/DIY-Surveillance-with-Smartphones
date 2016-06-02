@@ -31,6 +31,24 @@ if [ -e /opt/surveillanceserver/conf/monitoring ]; then
         subject="BATTERY LEVEL LOW: $curr_batt_level %"
         send_email "$body" "$subject" "$to"
     fi
+
+    hosts=(`echo $IP_CAMERA_HOSTS | tr ":" " "`)
+    ports=(`echo $IP_CAMERA_PORTS | tr ":" " "`)
+    usernames=(`echo $IP_CAMERA_USERNAMES | tr ":" " "`)
+    passwords=(`echo $IP_CAMERA_PASSWORDS | tr ":" " "`)
+
+    num_hosts=${#hosts[@]}
+
+    for (( i=0; i<${num_hosts}; i++ ));
+    do
+        statusCode=$(curl -s -u ${usernames[$i]}:${passwords[$i]} http://${hosts[$i]}:${ports[$i]} -I | head -1 | awk '{ print $2 }')
+        if [ -z $statusCode ] || [ $statusCode -ne "200" ]
+        then
+            body="Got non 200 response code of $statusCode from http://${hosts[$i]}:${ports[$i]}"
+            subject="Got non 200 response from ${hosts[$i]}"
+            send_email "$body" "$subject" "$to"
+        fi
+    done
 else
     echo "missing monitoring configuration file!"
     exit 1
