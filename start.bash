@@ -66,15 +66,18 @@ systemctl enable zoneminder.service
 adduser www-data sudo
 
 #allow api to work
+echo -e "\e[33m Configuring Zoneminder API and Disabling debug logging"
 chown -R www-data:www-data /usr/share/zoneminder
 cat << END >> /etc/apache2/conf-available/zoneminder.conf
 <Directory /usr/share/zoneminder/www/api>
     AllowOverride All
 </Directory>
 END
+sed -i "s/Configure::write('debug', 2)/Configure::write('debug', 0)/g" /usr/share/zoneminder/www/api/app/Config/core.php
 
 echo -e "\e[33m Enabling CGI mod & Zoneminder configurations in Apache \e[0m"
 a2enmod cgi
+a2enmod rewrite_module
 a2enconf zoneminder
 
 #add php to timezone

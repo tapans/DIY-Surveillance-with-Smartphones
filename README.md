@@ -47,12 +47,18 @@ Disclaimer: Note that a smartphone is not meant to be run as a dedicated server 
 
 3. On your computer, clone this repo and edit config files in the conf directory with your custom settings.
 Enable passwordless ssh login into the server phone with:
-<pre><code>ssh android@IP "mkdir -p ~/.ssh" && scp ~/.ssh/id_rsa.pub android@IP:~/.ssh/authorized_keys</code></pre>
-And then copy over this repo into the phone using scp
+```
+IP=ANDROID_SERVER_IP
+ssh android@$IP "mkdir -p ~/.ssh" && scp ~/.ssh/id_rsa.pub android@$IP:~/.ssh/authorized_keys
+```
+(enter android phone pass - default should be changeme). And then copy over this repo into the phone using scp:
+```
+scp -r * android@$IP:
+```
 
-4. SSH into the phone (ssh android@IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
+4. SSH into the phone (ssh android@$IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
 
-5. From a web browser on your computer, open zoneminder web interface at http://serverip/zm
+5. From a web browser on your computer, open zoneminder web interface at http://ANDROID_SERVER_IP/zm
 <pre>
 Click Options, 
 	Click Images tab
@@ -60,7 +66,7 @@ Click Options,
 		Click Save
 	Click Paths
 		Change PATH_ZMS from /cgi-bin/nph-zms to /zm/cgi-bin/nph-zms Click Save
-		Optional: under Paths change PATH_SWAP to /dev/shm (puts this process in RAM drive) Click Sav
+		Optional: under Paths change PATH_SWAP to /dev/shm (puts this process in RAM drive) Click Save
 	Click Email
 		Make sure OPT_EMAIL is checked
 		EMAIL_SUBJECT and EMAIL_BODY are self explanatory
@@ -69,7 +75,7 @@ Click Options,
 		EMAIL_HOST: put in localhost
 		FROM_EMAIL: your email
 Restart Zoneminder
-
+</pre>
 6. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
 
 ## Other Notes

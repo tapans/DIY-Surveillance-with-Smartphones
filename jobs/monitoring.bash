@@ -6,10 +6,12 @@ function send_email {
 
 if [ -e /opt/surveillanceserver/conf/monitoring ]; then
     . /opt/surveillanceserver/conf/monitoring
+    . /opt/surveillanceserver/conf/ipcameras
 
     to="$EMAIL_TO"
     curr_cpu_temp=`cat /sys/class/thermal/thermal_zone0/temp`
     curr_disk_usage=`df -H | grep '/dev/loop0' | awk '{ print $5 }' | tr '%' ' '`
+    curr_batt_level=`cat /sys/class/power_supply/battery/capacity`
 
     if [ $curr_cpu_temp -gt $CPU_TEMP_THRESHOLD ]
     then
