@@ -8,9 +8,7 @@ if [ -e /opt/surveillanceserver/conf/ipcameras ]; then
     lng_param=$LONGITUDE
 
     #get sunrise & sunset times and
-    read sunrise sunset \
-    <<< `curl -s "http://api.sunrise-sunset.org/json?lat=$lat_param&lng=$lng_param&data=today&formatted=0" \
-    | python -c "import json, sys; r=json.load(sys.stdin); print r['results']['sunrise']; print r['results']['sunset']"`
+    read sunrise sunset <<< `helpers/get_sunrise_sunset_times.py $lat_param $lon_param`
     toggle_off_time=`date -d "$sunrise - 30 mins" +'%H:%M'`
     toggle_on_time=`date -d "$sunset + 30 mins" +'%H:%M'`
 
