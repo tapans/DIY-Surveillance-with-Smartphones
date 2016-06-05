@@ -8,7 +8,7 @@ if [ -e /opt/surveillanceserver/conf/ipcameras ]; then
     lng_param=$LONGITUDE
 
     #get sunrise & sunset times and
-    read sunrise sunset <<< `helpers/get_sunrise_sunset_times.py $lat_param $lon_param`
+    read sunrise sunset <<< `/opt/surveillanceserver/helpers/get_sunrise_sunset_times.py $lat_param $lon_param`
     toggle_off_time=`date -d "$sunrise - 30 mins" +'%H:%M'`
     toggle_on_time=`date -d "$sunset + 30 mins" +'%H:%M'`
 

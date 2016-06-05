@@ -12,9 +12,10 @@ if egrep -q -v '^#|^[^ ]*=[^;]*' $mainConfigs && egrep -v '^#|^[^ ]*=[^;]*' $cam
 fi
 
 echo -e "\e[33m Copying configs and job scripts to /opt/surveillance...\e[0m" >&2
-mkdir -p /opt/surveillanceserver/jobs && mkdir -p /opt/surveillanceserver/conf
-cp conf/* /opt/surveillanceserver/conf
-cp -R jobs/* /opt/surveillanceserver/jobs/
+mkdir -p /opt/surveillanceserver
+cp -R conf /opt/surveillanceserver
+cp -R jobs /opt/surveillanceserver
+cp -R helpers /opt/surveillanceserver
 
 #make variables from main.conf available in current environment
 . $mainConfigs
