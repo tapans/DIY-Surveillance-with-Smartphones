@@ -6,7 +6,6 @@ function send_email {
 
 if [ -e /opt/surveillanceserver/conf/monitoring ]; then
     . /opt/surveillanceserver/conf/monitoring
-    . /opt/surveillanceserver/conf/ipcameras
 
     to="$EMAIL_TO"
     curr_cpu_temp=`cat /sys/class/thermal/thermal_zone0/temp`
@@ -34,6 +33,7 @@ if [ -e /opt/surveillanceserver/conf/monitoring ]; then
         send_email "$body" "$subject" "$to"
     fi
 
+    read IP_CAMERA_USERNAMES IP_CAMERA_PASSWORDS IP_CAMERA_HOSTS IP_CAMERA_PORTS <<< `/opt/surveillanceserver/helpers/get_enabled_monitors_data.pl`
     hosts=(`echo $IP_CAMERA_HOSTS | tr ":" " "`)
     ports=(`echo $IP_CAMERA_PORTS | tr ":" " "`)
     usernames=(`echo $IP_CAMERA_USERNAMES | tr ":" " "`)
