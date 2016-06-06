@@ -12,7 +12,7 @@
 (https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en): Turn your smartphone into a proper IP Camera
 
 ## Requirements:
-- Couple of smartphones, 1 of which should be rootable so you can use it as the zoneminder server (mileage will vary depending on the smartphone - I Used Samsung Galaxy S4, Galaxy S2, Blackberry Z30 and HTC Panache, out of which S2 and S4 were the zoneminder servers)
+- Couple of smartphones, 1 of which should be rootable so you can use it as the zoneminder server (mileage will vary depending on the smartphone - I Used Samsung Galaxy S4, Galaxy S2, Blackberry Z30 and HTC Panache, out of which S4 was the zoneminder servers)
 - Mounts for the IP Camera Smartphones (I just used the cheap commercial ones for car dashboard)
 - tech and linux saviness: you'll need to root your phone, possibly troubleshoot linux issues when installing Linux Deploy as well as the start script, open up ports on your router if you want to access the web interface remotely, etc
 
@@ -25,8 +25,9 @@ Disclaimer: Note that a smartphone is not meant to be run as a dedicated server 
 
 ## What the start.bash script does:
 - Automatically installs and configures zoneminder on the server phone
-- Sets up mail on the server using your gmail account
+- Sets up mail on the server using your gmail account so emails are sent to you when alarms are detected
 - Sets up cron and at jobs to toggle night vision on every configured ip camera based on the daily sunrise and sunset times
+- Monitors CPU Temperature, Disk Usage & Battery % on the surveillance server, does health check on ip cameras, and sends emails accordingly
 
 ## Steps:
 0. Assign a static IP on each smartphone.
@@ -87,4 +88,5 @@ Restart Zoneminder
 * 15-Feb-2016 initial commit
 * 25-Mar-2016 scripted email configurations
 * 02-Apr-2016 added daily job to toggle night vision settings for all configured ip cameras
-* 09-Apr-2016 added minutely run monitoring job: currently emails when cpu temperature, disk usage etc is above set threshold
+* 09-Apr-2016 added minutely run monitoring job: currently emails when cpu temperature, disk usage, battery %, etc is above set threshold.
+* 05-Jun-2016 add health check for ip cameras on the minutely monitoring job
