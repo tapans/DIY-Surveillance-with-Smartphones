@@ -30,11 +30,11 @@ Disclaimer: Note that a smartphone is not meant to be run as a dedicated server 
 - Monitors CPU Temperature, Disk Usage & Battery % on the surveillance server, does health check on ip cameras, and sends emails accordingly
 
 ## Steps:
-0. Assign a static IP on each smartphone.
+1. Assign a static IP on each smartphone.
 
-1. Choose 1 of the android smartphones as the server: root it (I used Cyanogenmod), install Busy Boy app by meefik and then install Linux Deploy app. 
+2. Choose 1 of the android smartphones as the server: root it (I used Cyanogenmod), install Busy Boy app by meefik and then install Linux Deploy app. 
 
-2. Open Linux Deploy, install Debian container: https://github.com/meefik/linuxdeploy/wiki/Installing-Debian
+3. Open Linux Deploy, install Debian container: https://github.com/meefik/linuxdeploy/wiki/Installing-Debian
   
   Set the following properties:
 	- Installation path: /data/media/linux.img
@@ -46,20 +46,20 @@ Disclaimer: Note that a smartphone is not meant to be run as a dedicated server 
 
   Start the Debian container
 
-3. On your computer, clone this repo and edit config files in the conf directory with your custom settings.
+4. On your computer, clone this repo and edit config files in the conf directory with your custom settings.
 Enable passwordless ssh login into the server phone with:
-```
-IP=ANDROID_SERVER_IP
-ssh android@$IP "mkdir -p ~/.ssh" && scp ~/.ssh/id_rsa.pub android@$IP:~/.ssh/authorized_keys
-```
-(enter android phone pass - default should be changeme). And then copy over this repo into the phone using scp:
-```
-scp -r * android@$IP:
-```
+	```
+	IP=ANDROID_SERVER_IP
+	ssh android@$IP "mkdir -p ~/.ssh" && scp ~/.ssh/id_rsa.pub android@$IP:~/.ssh/authorized_keys
+	```
+	(enter android phone pass - default should be changeme). And then copy over this repo into the phone using scp:
+	```
+	scp -r * android@$IP:
+	```
 
-4. SSH into the phone (ssh android@$IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
+5. SSH into the phone (ssh android@$IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
 
-5. From a web browser on your computer, open zoneminder web interface at http://ANDROID_SERVER_IP/zm
+6. From a web browser on your computer, open zoneminder web interface at http://ANDROID_SERVER_IP/zm
 <pre>
 Click Options, 
 	Click Images tab
@@ -77,12 +77,13 @@ Click Options,
 		FROM_EMAIL: your email
 Restart Zoneminder
 </pre>
-6. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
+7. Setup all smartphones running Ip Webcam as monitors. See setup guide [here](https://bkjaya.wordpress.com/2015/11/28/how-to-use-an-old-android-phone-as-an-ip-camera-on-zoneminder/) and general guide on zoneminder monitors [here](http://zoneminder.readthedocs.org/en/stable/userguide/definemonitor.html)
 
 ## Other Notes
 - Setup port forwarding to access web console remotely, Install client [Android app](http://pliablepixels.github.io/) to view the feeds
 - To resize */dev/loop0* and increase space for the server container on the phone: Use *losetup /dev/loop0* to see what file the loopback device is attached to, then you can increase its size with, for example, *dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx* where xxx is the number of MiB you want to add. After that, *losetup -c /dev/loop0* and *resize2fs /dev/loop0* should make the new space available for use.
 - Security: Change default "changeme" password of the server! Create a password for the Zoneminder admin user on the web interface. Possible create other users on the system as well as for the zoneminder web interface with lower privileges, Configure [apache to use https](https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-14-04) to encrypt all communication
+- See commits for minor relevant enhancements to the ZoneMinder web interface: https://github.com/tapans/ZoneMinder
 
 ## Changelog:
 * 15-Feb-2016 initial commit
