@@ -8,7 +8,7 @@ if [ -e /opt/surveillanceserver/conf/monitoring ]; then
     . /opt/surveillanceserver/conf/monitoring
 
     to="$EMAIL_TO"
-    curr_cpu_temp=`cat /sys/class/thermal/thermal_zone0/temp`
+    curr_cpu_temp=`cat /sys/devices/platform/sec-thermistor/temperature | cut -c1-2`
     curr_disk_usage=`df -H | grep '/dev/loop0' | awk '{ print $5 }' | tr '%' ' '`
     curr_batt_level=`cat /sys/class/power_supply/battery/capacity`
 

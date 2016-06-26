@@ -54,7 +54,7 @@ Enable passwordless ssh login into the server phone with:
 	```
 	(enter android phone pass - default should be changeme). And then copy over this repo into the phone using scp:
 	```
-	scp -r * android@$IP:
+	scp -r [!.]* android@$IP:
 	```
 
 5. SSH into the phone (ssh android@$IP), sudo su, and execute start.bash to install zoneminder, dependencies, jobs, and common configurations.
@@ -81,7 +81,8 @@ Restart Zoneminder
 
 ## Other Notes
 - Setup port forwarding to access web console remotely, Install client [Android app](http://pliablepixels.github.io/) to view the feeds
-- To resize */dev/loop0* and increase space for the server container on the phone: Use *losetup /dev/loop0* to see what file the loopback device is attached to, then you can increase its size with, for example, *dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx* where xxx is the number of MiB you want to add. After that, *losetup -c /dev/loop0* and *resize2fs /dev/loop0* should make the new space available for use.
+- To resize */dev/loop0* and increase space for the server container on the phone: Use *losetup /dev/loop0* to see what file the loopback device is attached to, then you can increase its size with, for example, *dd if=/dev/loop0 bs=1MiB of=/path/to/file conv=notrunc oflag=append count=xxx* where xxx is the number of MiB you want to add. After that, *losetup -c /dev/loop0* and *resize2fs /dev/loop0* should make the new space available for use. Related:
+http://www.iwillfolo.com/how-to-re-partition-your-android-tablet-or-smartphone-all-options-included-change-size-fs-type-etc/2/
 - Security: Change default "changeme" password of the server! Create a password for the Zoneminder admin user on the web interface. Possible create other users on the system as well as for the zoneminder web interface with lower privileges, Configure [apache to use https](https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-14-04) to encrypt all communication
 - See commits for minor relevant enhancements to the ZoneMinder web interface: https://github.com/tapans/ZoneMinder
 
